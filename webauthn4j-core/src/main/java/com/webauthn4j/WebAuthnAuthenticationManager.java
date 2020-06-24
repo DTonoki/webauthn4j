@@ -77,7 +77,7 @@ public class WebAuthnAuthenticationManager {
         AuthenticatorData<AuthenticationExtensionAuthenticatorOutput<?>> authenticatorData = authenticatorDataConverter.convert(authenticatorDataBytes);
 
         AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>> clientExtensions =
-                authenticationExtensionsClientOutputsConverter.convert(authenticationRequest.getClientExtensionsJSON());
+                authenticationExtensionsClientOutputsConverter.convertStringToAuthenticationExtensions(authenticationRequest.getClientExtensionsJSON());
 
         return new AuthenticationData(
                 credentialId,

@@ -300,8 +300,7 @@ public abstract class WebAuthnModelAuthenticator implements WebAuthnAuthenticato
             extensions = new AuthenticationExtensionsClientInputs<>();
         }
         Map<String, RegistrationExtensionAuthenticatorOutput<?>> processedExtensions = new HashMap<>();
-        for (Map.Entry<String, RegistrationExtensionClientInput<?>> entry : extensions.entrySet()) {
-            String extensionIdentifier = entry.getKey();
+        for (String extensionIdentifier : extensions.getKeys()) {
             //TODO
         }
         return new AuthenticationExtensionsAuthenticatorOutputs<>(processedExtensions);

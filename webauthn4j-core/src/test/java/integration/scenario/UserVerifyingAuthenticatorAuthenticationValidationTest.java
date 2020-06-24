@@ -79,7 +79,7 @@ class UserVerifyingAuthenticatorAuthenticationValidationTest {
         PublicKeyCredential<AuthenticatorAssertionResponse, AuthenticationExtensionClientOutput<?>> credential = clientPlatform.get(credentialRequestOptions);
         AuthenticatorAssertionResponse authenticationRequest = credential.getAuthenticatorResponse();
         AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>> clientExtensionResults = credential.getClientExtensionResults();
-        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertToString(clientExtensionResults);
+        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertAuthenticationExtensionsToString(clientExtensionResults);
 
         ServerProperty serverProperty = new ServerProperty(origin, rpId, challenge, null);
         Authenticator authenticator = TestDataUtil.createAuthenticator(attestationObject);
@@ -134,7 +134,7 @@ class UserVerifyingAuthenticatorAuthenticationValidationTest {
         PublicKeyCredential<AuthenticatorAssertionResponse, AuthenticationExtensionClientOutput<?>> credential = clientPlatform.get(credentialRequestOptions, collectedClientData);
         AuthenticatorAssertionResponse authenticationRequest = credential.getAuthenticatorResponse();
         AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>> clientExtensionResults = credential.getClientExtensionResults();
-        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertToString(clientExtensionResults);
+        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertAuthenticationExtensionsToString(clientExtensionResults);
 
         ServerProperty serverProperty = new ServerProperty(origin, rpId, challenge, tokenBindingId);
         Authenticator authenticator = TestDataUtil.createAuthenticator(attestationObject);

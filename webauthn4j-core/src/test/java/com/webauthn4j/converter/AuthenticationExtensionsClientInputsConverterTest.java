@@ -17,17 +17,13 @@
 package com.webauthn4j.converter;
 
 import com.webauthn4j.converter.util.ObjectConverter;
+import com.webauthn4j.data.extension.client.AuthenticationExtensionClientInput;
 import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientInputs;
-import com.webauthn4j.data.extension.client.ExtensionClientInput;
 import com.webauthn4j.data.extension.client.FIDOAppIDExtensionClientInput;
 import com.webauthn4j.data.extension.client.RegistrationExtensionClientInput;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class AuthenticationExtensionsClientInputsConverterTest {
 
@@ -37,35 +33,38 @@ class AuthenticationExtensionsClientInputsConverterTest {
 
 
     @Test
-    void convert_null_test() {
-        AuthenticationExtensionsClientInputs<RegistrationExtensionClientInput<Boolean>> value = authenticationExtensionsClientInputsConverter.convert(null);
+    void convertRegistrationExtensions_null_test() {
+        AuthenticationExtensionsClientInputs<RegistrationExtensionClientInput<?>> value = authenticationExtensionsClientInputsConverter.convertStringToRegistrationExtensions(null);
         assertThat(value).isNull();
     }
 
     @Test
-    void convertToString_test() {
-        Map<String, ExtensionClientInput<?>> clientInputs = new HashMap<>();
-        clientInputs.put(FIDOAppIDExtensionClientInput.ID, new FIDOAppIDExtensionClientInput("test"));
-        assertThat(authenticationExtensionsClientInputsConverter.convertToString(new AuthenticationExtensionsClientInputs<>(clientInputs))).isEqualTo("{\"appid\":\"test\"}");
+    void convertAuthenticationExtensionsToString_test() {
+        AuthenticationExtensionsClientInputs<AuthenticationExtensionClientInput<?>> extensions =
+                new AuthenticationExtensionsClientInputs.BuilderForAuthentication()
+                .setAppId(new FIDOAppIDExtensionClientInput("test"))
+                .build();
+        assertThat(authenticationExtensionsClientInputsConverter.convertAuthenticationExtensionsToString(extensions)).isEqualTo("{\"appid\":\"test\"}");
     }
 
     @Test
-    void convertToString_null_test() {
-        assertThat(authenticationExtensionsClientInputsConverter.convertToString(null)).isNull();
+    void convertAuthenticationExtensionsToString_null_test() {
+        assertThat(authenticationExtensionsClientInputsConverter.convertAuthenticationExtensionsToString(null)).isNull();
     }
 
     @Test
     void convert_test() {
         String source = "{\"appid\":\"dummy\"}";
-        AuthenticationExtensionsClientInputs<ExtensionClientInput<?>> clientInputs = authenticationExtensionsClientInputsConverter.convert(source);
-        assertThat(clientInputs.get(FIDOAppIDExtensionClientInput.ID)).isEqualTo(new FIDOAppIDExtensionClientInput("dummy"));
+        AuthenticationExtensionsClientInputs<AuthenticationExtensionClientInput<?>> clientInputs = authenticationExtensionsClientInputsConverter.convertStringToAuthenticationExtensions(source);
+        assertThat(clientInputs.getAppId()).isEqualTo(new FIDOAppIDExtensionClientInput("dummy"));
     }
 
+    @SuppressWarnings("unused")
     @Test
     void convert_with_invalid_extension_test() {
         String source = "{\"invalid\":\"\"}";
-        assertDoesNotThrow(
-                () -> authenticationExtensionsClientInputsConverter.convert(source)
-        );
+        AuthenticationExtensionsClientInputs<RegistrationExtensionClientInput<?>> extensions = authenticationExtensionsClientInputsConverter.convertStringToRegistrationExtensions(source);
+        assertThat(extensions.getUnknownKeys()).contains("invalid");
+
     }
 }

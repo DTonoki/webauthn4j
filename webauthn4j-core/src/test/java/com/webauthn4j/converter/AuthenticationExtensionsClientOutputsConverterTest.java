@@ -29,12 +29,12 @@ class AuthenticationExtensionsClientOutputsConverterTest {
     private final AuthenticationExtensionsClientOutputsConverter target = new AuthenticationExtensionsClientOutputsConverter(objectConverter);
 
     @Test
-    void convert_null_test() {
-        assertThat(target.convert(null)).isNull();
+    void convertAuthenticationExtensions() {
+        assertThat(target.convertStringToAuthenticationExtensions(null)).isNull();
     }
 
     @Test
-    void convertToString_null_test() {
-        assertThat(target.convertToString(null)).isNull();
+    void convertAuthenticationExtensionsToString_null_test() {
+        assertThat(target.convertAuthenticationExtensionsToString(null)).isNull();
     }
 }

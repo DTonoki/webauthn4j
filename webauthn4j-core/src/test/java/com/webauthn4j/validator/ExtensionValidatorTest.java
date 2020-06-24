@@ -46,22 +46,21 @@ class ExtensionValidatorTest {
 
     @Test
     void expected_extension_does_exist_test() {
-        Map<String, ExtensionClientOutput<?>> clientOutputs = new HashMap<>();
         AuthenticationExtensionsAuthenticatorOutputs<ExtensionAuthenticatorOutput<?>> authenticatorOutputs = new AuthenticationExtensionsAuthenticatorOutputs<>();
-        clientOutputs.put(FIDOAppIDExtensionClientOutput.ID, new FIDOAppIDExtensionClientOutput(true));
+        AuthenticationExtensionsClientOutputs.BuilderForAuthentication builder = new AuthenticationExtensionsClientOutputs.BuilderForAuthentication();
+        builder.setAppId(new FIDOAppIDExtensionClientOutput(true));
         List<String> expectedExtensions = Collections.singletonList(FIDOAppIDExtensionClientOutput.ID);
-        extensionValidator.validate(new AuthenticationExtensionsClientOutputs<>(clientOutputs), authenticatorOutputs, expectedExtensions);
+        extensionValidator.validate(builder.build(), authenticatorOutputs, expectedExtensions);
     }
 
     @Test
     void unexpected_extension_does_exist_test() {
-        Map<String, ExtensionClientOutput<?>> source = new HashMap<>();
         AuthenticationExtensionsAuthenticatorOutputs<ExtensionAuthenticatorOutput<?>> authenticatorOutputs = new AuthenticationExtensionsAuthenticatorOutputs<>();
-        source.put(FIDOAppIDExtensionClientOutput.ID, new FIDOAppIDExtensionClientOutput(true));
+        AuthenticationExtensionsClientOutputs.BuilderForAuthentication builder = new AuthenticationExtensionsClientOutputs.BuilderForAuthentication();
+        builder.setUnknowns(Collections.singletonMap("unknown", true));
         List<String> expectedExtensions = Collections.emptyList();
-        AuthenticationExtensionsClientOutputs<ExtensionClientOutput<?>> clientOutputs = new AuthenticationExtensionsClientOutputs<>(source);
         assertThrows(UnexpectedExtensionException.class,
-                () -> extensionValidator.validate(clientOutputs, authenticatorOutputs, expectedExtensions)
+                () -> extensionValidator.validate(builder.build(), authenticatorOutputs, expectedExtensions)
         );
     }
 

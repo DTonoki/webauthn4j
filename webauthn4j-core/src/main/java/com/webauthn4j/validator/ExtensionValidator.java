@@ -47,7 +47,7 @@ class ExtensionValidator {
         }
 
         if (authenticationExtensionsClientOutputs != null) {
-            authenticationExtensionsClientOutputs.keySet().forEach(identifier -> {
+            authenticationExtensionsClientOutputs.getKeys().forEach(identifier -> {
                 if (!expected.contains(identifier)) {
                     throw new UnexpectedExtensionException(String.format("Unexpected client extension '%s' is contained", identifier));
                 }

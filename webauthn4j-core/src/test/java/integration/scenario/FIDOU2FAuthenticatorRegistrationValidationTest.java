@@ -93,7 +93,7 @@ class FIDOU2FAuthenticatorRegistrationValidationTest {
         AuthenticatorAttestationResponse authenticatorAttestationResponse = credential.getAuthenticatorResponse();
         AuthenticationExtensionsClientOutputs<RegistrationExtensionClientOutput<?>> clientExtensionResults = credential.getClientExtensionResults();
         Set<String> transports = authenticatorTransportConverter.convertSetToStringSet(authenticatorAttestationResponse.getTransports());
-        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertToString(clientExtensionResults);
+        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertRegistrationExtensionsToString(clientExtensionResults);
         ServerProperty serverProperty = new ServerProperty(origin, rpId, challenge, null);
         RegistrationRequest registrationRequest
                 = new RegistrationRequest(
@@ -148,7 +148,7 @@ class FIDOU2FAuthenticatorRegistrationValidationTest {
         AuthenticatorAttestationResponse authenticatorAttestationResponse = credential.getAuthenticatorResponse();
         Set<String> transports = authenticatorTransportConverter.convertSetToStringSet(authenticatorAttestationResponse.getTransports());
         AuthenticationExtensionsClientOutputs<RegistrationExtensionClientOutput<?>> clientExtensionResults = credential.getClientExtensionResults();
-        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertToString(clientExtensionResults);
+        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertRegistrationExtensionsToString(clientExtensionResults);
         ServerProperty serverProperty = new ServerProperty(origin, rpId, challenge, null);
         RegistrationRequest registrationRequest
                 = new RegistrationRequest(

@@ -19,8 +19,9 @@ package com.webauthn4j.converter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.webauthn4j.converter.util.JsonConverter;
 import com.webauthn4j.converter.util.ObjectConverter;
+import com.webauthn4j.data.extension.client.AuthenticationExtensionClientOutput;
 import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientOutputs;
-import com.webauthn4j.data.extension.client.ExtensionClientOutput;
+import com.webauthn4j.data.extension.client.RegistrationExtensionClientOutput;
 import com.webauthn4j.util.AssertUtil;
 
 /**
@@ -43,14 +44,28 @@ public class AuthenticationExtensionsClientOutputsConverter {
     // ~ Methods
     // ================================================================================================
 
-    public <T extends ExtensionClientOutput<?>> AuthenticationExtensionsClientOutputs<T> convert(String value) {
+    public AuthenticationExtensionsClientOutputs<RegistrationExtensionClientOutput<?>> convertStringToRegistrationExtensions(String value) {
         if (value == null) {
             return null;
         }
-        return jsonConverter.readValue(value, new TypeReference<AuthenticationExtensionsClientOutputs<T>>(){});
+        return jsonConverter.readValue(value, new TypeReference<AuthenticationExtensionsClientOutputs<RegistrationExtensionClientOutput<?>>>(){});
     }
 
-    public <T extends ExtensionClientOutput<?>> String convertToString(AuthenticationExtensionsClientOutputs<T> value) {
+    public AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>> convertStringToAuthenticationExtensions(String value) {
+        if (value == null) {
+            return null;
+        }
+        return jsonConverter.readValue(value, new TypeReference<AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>>>(){});
+    }
+
+    public String convertRegistrationExtensionsToString(AuthenticationExtensionsClientOutputs<RegistrationExtensionClientOutput<?>> value) {
+        if (value == null) {
+            return null;
+        }
+        return jsonConverter.writeValueAsString(value);
+    }
+
+    public String convertAuthenticationExtensionsToString(AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>> value) {
         if (value == null) {
             return null;
         }

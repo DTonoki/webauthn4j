@@ -37,8 +37,6 @@ import com.webauthn4j.server.ServerProperty;
 import com.webauthn4j.util.UnsignedNumberUtil;
 import com.webauthn4j.validator.exception.ConstraintViolationException;
 
-import java.util.Map;
-
 /**
  * Per field checker utility class
  */
@@ -191,24 +189,16 @@ class BeanAssertUtil {
         validate(coseKey);
     }
 
+    @SuppressWarnings("unused")
     public static <T extends ExtensionClientOutput<?>> void validateAuthenticationExtensionsClientOutputs(
             AuthenticationExtensionsClientOutputs<T> authenticationExtensionsClientOutputs) {
-        if (authenticationExtensionsClientOutputs == null) {
-            return;
-        }
-        for (Map.Entry<String, T> set : authenticationExtensionsClientOutputs.entrySet()) {
-            validate(set.getKey(), set.getValue());
-        }
+        //nop
     }
 
+    @SuppressWarnings("unused")
     public static <T extends ExtensionAuthenticatorOutput<?>> void validateAuthenticatorExtensionsOutputs(
             AuthenticationExtensionsAuthenticatorOutputs<T> authenticationExtensionsAuthenticatorOutputs) {
-        if (authenticationExtensionsAuthenticatorOutputs == null) {
-            return;
-        }
-        for (Map.Entry<String, T> set : authenticationExtensionsAuthenticatorOutputs.entrySet()) {
-            validate(set.getKey(), set.getValue());
-        }
+        //nop
     }
 
     public static void validate(String identifier, ExtensionOutput<?> extensionOutput) {

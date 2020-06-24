@@ -34,9 +34,6 @@ import com.webauthn4j.util.WIP;
 import com.webauthn4j.util.exception.NotImplementedException;
 import com.webauthn4j.validator.exception.ValidationException;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @WIP
 public class ClientPlatform {
 
@@ -119,17 +116,17 @@ public class ClientPlatform {
             extensions = new AuthenticationExtensionsClientInputs<>();
         }
 
-        Map<String, RegistrationExtensionClientOutput<?>> map = new HashMap<>();
-        extensions.forEach((key, value) -> {
+        AuthenticationExtensionsClientOutputs.BuilderForRegistration builder = new AuthenticationExtensionsClientOutputs.BuilderForRegistration();
+        extensions.getKeys().forEach((key) -> {
             switch (key) {
                 case CredentialPropertiesExtensionClientInput.ID:
-                    map.put(CredentialPropertiesExtensionClientOutput.ID, new CredentialPropertiesExtensionClientOutput(new CredentialPropertiesExtensionClientOutput.CredentialPropertiesOutput(true))); //TODO
+                    builder.setCredProps(new CredentialPropertiesExtensionClientOutput(new CredentialPropertiesExtensionClientOutput.CredentialPropertiesOutput(true)));
                     break;
                 default:
                     //nop
             }
         });
-        return new AuthenticationExtensionsClientOutputs<>(map);
+        return builder.build();
     }
 
     private AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>>
@@ -140,7 +137,7 @@ public class ClientPlatform {
         }
 
         AuthenticationExtensionsClientOutputs<AuthenticationExtensionClientOutput<?>> map = new AuthenticationExtensionsClientOutputs<>();
-        extensions.forEach((key, value) -> {
+        extensions.getKeys().forEach((key) -> {
             switch (key) {
                 //TODO
             }

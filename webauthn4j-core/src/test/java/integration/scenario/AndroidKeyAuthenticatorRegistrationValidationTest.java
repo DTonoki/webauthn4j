@@ -95,7 +95,7 @@ class AndroidKeyAuthenticatorRegistrationValidationTest {
         AuthenticatorAttestationResponse registrationRequest = credential.getAuthenticatorResponse();
         AuthenticationExtensionsClientOutputs<RegistrationExtensionClientOutput<?>> clientExtensionResults = credential.getClientExtensionResults();
         Set<String> transports = Collections.emptySet();
-        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertToString(clientExtensionResults);
+        String clientExtensionJSON = authenticationExtensionsClientOutputsConverter.convertRegistrationExtensionsToString(clientExtensionResults);
         ServerProperty serverProperty = new ServerProperty(origin, rpId, challenge, null);
         RegistrationRequest webAuthnRegistrationRequest
                 = new RegistrationRequest(

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClassResolver;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.webauthn4j.data.extension.client.ExtensionClientOutput;
-import com.webauthn4j.data.extension.client.UnknownExtensionClientOutput;
+import com.webauthn4j.util.exception.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,8 @@ public class ExtensionClientOutputDeserializer extends StdDeserializer<Extension
             }
         }
 
-        logger.warn("Unknown extension '{}' is contained.", name);
-        return ctxt.readValue(p, UnknownExtensionClientOutput.class);
+        throw new NotImplementedException();
+//        logger.warn("Unknown extension '{}' is contained.", name);
+//        return ctxt.readValue(p, UnknownExtensionClientOutput.class);
     }
 }
