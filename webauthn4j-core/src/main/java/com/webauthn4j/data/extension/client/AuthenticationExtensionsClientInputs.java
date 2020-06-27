@@ -16,11 +16,6 @@
 
 package com.webauthn4j.data.extension.client;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.webauthn4j.util.CollectionUtil;
-
 import java.util.*;
 
 /**
@@ -31,122 +26,13 @@ import java.util.*;
  * §5.7. Authentication Extensions Client Inputs (typedef AuthenticationExtensionsClientInputs)</a>
  */
 @SuppressWarnings("unused")
-public class AuthenticationExtensionsClientInputs<V extends ExtensionClientInput<?>>  {
+public interface AuthenticationExtensionsClientInputs<E extends ExtensionClientInput<?>>  {
 
-    private Set<String> keys;
-    private FIDOAppIDExtensionClientInput appId;
-    private CredentialPropertiesExtensionClientInput credProps;
-    private Map<String, Object> unknowns;
+    Set<String> getKeys();
 
-    public AuthenticationExtensionsClientInputs(){
-        keys = Collections.emptySet();
-        unknowns = Collections.emptyMap();
-    }
+    Set<String> getUnknownKeys();
 
-    @JsonIgnore
-    public Set<String> getKeys() {
-        return keys;
-    }
+    <T extends E> T getExtension(Class<T> tClass);
 
-    @JsonIgnore
-    public Set<String> getUnknownKeys(){
-        return unknowns.keySet();
-    }
-
-    @SuppressWarnings("unchecked")
-    @JsonIgnore
-    public <T> T getValue(String key){
-        if(key.equals(FIDOAppIDExtensionClientInput.ID)){
-            if(getAppId() == null){
-                return null;
-            }
-            return (T) getAppId().getValue();
-        }
-        return (T) unknowns.get(key);
-    }
-
-    @JsonGetter("appid") //"appid" is not typo
-    public FIDOAppIDExtensionClientInput getAppId(){
-        return appId;
-    }
-
-    @JsonGetter("credProps")
-    public CredentialPropertiesExtensionClientInput getCredProps(){
-        return credProps;
-    }
-
-    @JsonAnyGetter
-    private Map<String, Object> getUnknowns(){
-        return unknowns;
-    }
-
-    public static class BuilderForRegistration {
-
-        private CredentialPropertiesExtensionClientInput credProps;
-        private Map<String, Object> unknowns = new HashMap<>();
-
-        public BuilderForRegistration(){}
-
-        public AuthenticationExtensionsClientInputs<RegistrationExtensionClientInput<?>> build(){
-            AuthenticationExtensionsClientInputs<RegistrationExtensionClientInput<?>> instance = new AuthenticationExtensionsClientInputs<>();
-            HashSet<String> keys = new HashSet<>();
-            if(this.credProps != null){
-                keys.add(CredentialPropertiesExtensionClientInput.ID);
-            }
-            if(unknowns != null){
-                keys.addAll(unknowns.keySet());
-            }
-            instance.keys = CollectionUtil.unmodifiableSet(keys);
-            instance.credProps = this.credProps;
-            instance.unknowns = CollectionUtil.unmodifiableMap(unknowns);
-            return instance;
-        }
-
-        public BuilderForRegistration setCredProps(CredentialPropertiesExtensionClientInput credProps){
-            this.credProps = credProps;
-            return this;
-        }
-
-        public BuilderForRegistration setUnknowns(Map<String, Object> unknowns) {
-            this.unknowns = unknowns;
-            return this;
-        }
-
-    }
-
-    // As members of AuthenticationExtensionsClientInputs will increase in the future,
-    // builder pattern is applied here.
-    public static class BuilderForAuthentication{
-
-        private FIDOAppIDExtensionClientInput appId;
-        private Map<String, Object> unknowns = new HashMap<>();
-
-        public BuilderForAuthentication(){}
-
-        public AuthenticationExtensionsClientInputs<AuthenticationExtensionClientInput<?>> build(){
-            AuthenticationExtensionsClientInputs<AuthenticationExtensionClientInput<?>> instance = new AuthenticationExtensionsClientInputs<>();
-            HashSet<String> keys = new HashSet<>();
-            if(this.appId != null){
-                keys.add(FIDOAppIDExtensionClientInput.ID);
-            }
-            if(unknowns != null){
-                keys.addAll(unknowns.keySet());
-            }
-            instance.keys = CollectionUtil.unmodifiableSet(keys);
-            instance.appId = this.appId;
-            instance.unknowns = CollectionUtil.unmodifiableMap(unknowns);
-            return instance;
-        }
-
-        public BuilderForAuthentication setAppId(FIDOAppIDExtensionClientInput appId){
-            this.appId = appId;
-            return this;
-        }
-
-        public BuilderForAuthentication setUnknowns(Map<String, Object> unknowns) {
-            this.unknowns = unknowns;
-            return this;
-        }
-    }
-
+    <V> V getValue(String key);
 }
